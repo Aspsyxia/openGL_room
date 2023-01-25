@@ -1,5 +1,7 @@
 #include"Model.h"
 
+glm::vec3 translation;
+
 Model::Model(const char* file)
 {
 	// Make a JSON object
@@ -21,6 +23,11 @@ void Model::Draw(Shader& shader, Camera& camera)
 	{
 		meshes[i].Mesh::Draw(shader, camera, matricesMeshes[i]);
 	}
+}
+
+void Model::Move(glm::vec3 transform)
+{
+	translation = translation * transform;
 }
 
 void Model::loadMesh(unsigned int indMesh)
@@ -54,7 +61,7 @@ void Model::traverseNode(unsigned int nextNode, glm::mat4 matrix)
 	json node = JSON["nodes"][nextNode];
 
 	// Get translation if it exists
-	glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f);
+	translation = glm::vec3(0.0f, 0.0f, 0.0f);
 	if (node.find("translation") != node.end())
 	{
 		float transValues[3];
