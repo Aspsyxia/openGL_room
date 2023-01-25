@@ -32,20 +32,7 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
 	// Check what type of color channels the texture has and load it accordingly
-	if (type == "normal")
-		glTexImage2D
-		(
-			GL_TEXTURE_2D,
-			0,
-			GL_RGBA,
-			widthImg,
-			heightImg,
-			0,
-			GL_RGBA,
-			GL_UNSIGNED_BYTE,
-			bytes
-		);
-	else if (numColCh == 4)
+	if (numColCh == 4)
 		glTexImage2D
 		(
 			GL_TEXTURE_2D,

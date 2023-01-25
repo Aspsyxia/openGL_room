@@ -27,13 +27,18 @@
                 0
             ],
             "name" : "jambsVertical",
+            "normalTexture" : {
+                "index" : 0,
+                "scale" : 2.4200000762939453,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "roughnessFactor" : 0.7268907427787781
             }
         }
     ],
@@ -56,9 +61,17 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
         }
     ],
     "images" : [
+        {
+            "mimeType" : "image/png",
+            "name" : "jambsVertical_normal",
+            "uri" : "textures/jambsVertical_normal.png"
+        },
         {
             "mimeType" : "image/png",
             "name" : "jambsVertical_baseColor",
@@ -69,7 +82,7 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 294,
+            "count" : 314,
             "max" : [
                 1.600000023841858,
                 2.450000047683716,
@@ -85,13 +98,13 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 294,
+            "count" : 314,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 294,
+            "count" : 314,
             "type" : "VEC2"
         },
         {
@@ -104,28 +117,28 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 3528,
+            "byteLength" : 3768,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 3528,
-            "byteOffset" : 3528
+            "byteLength" : 3768,
+            "byteOffset" : 3768
         },
         {
             "buffer" : 0,
-            "byteLength" : 2352,
-            "byteOffset" : 7056
+            "byteLength" : 2512,
+            "byteOffset" : 7536
         },
         {
             "buffer" : 0,
             "byteLength" : 1224,
-            "byteOffset" : 9408
+            "byteOffset" : 10048
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 10632,
+            "byteLength" : 11272,
             "uri" : "jambsVertical.bin"
         }
     ]

@@ -67,6 +67,7 @@ int main()
 
 	Model models[n] = { tatami, doorBalcony, doorFusuma, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical };
 
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.85f, 0.85f, 0.90f, 1.0f);
