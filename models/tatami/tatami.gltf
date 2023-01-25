@@ -68,13 +68,13 @@
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "tatami_normal.png",
-            "uri" : "textures/tatami_normal_png.png"
+            "name" : "tatami_normal",
+            "uri" : "textures/tatami_normal.png"
         },
         {
             "mimeType" : "image/png",
-            "name" : "tatami_baseColor.png",
-            "uri" : "textures/tatami_baseColor_png.png"
+            "name" : "tatami_baseColor",
+            "uri" : "textures/tatami_baseColor.png"
         }
     ],
     "accessors" : [

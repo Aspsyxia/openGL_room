@@ -33,7 +33,7 @@ int main()
 	Shader skyboxProgram("skybox.vert", "skybox.frag");
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 1.8f, 0.0f);
 	glm::mat4 lightModel = glm::mat4(3.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
