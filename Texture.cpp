@@ -4,6 +4,7 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 {
 	// Assigns the type of the texture ot the texture object
 	type = texType;
+	printf(type);
 
 	// Stores the width, height, and the number of color channels of the image
 	int widthImg, heightImg, numColCh;
@@ -11,7 +12,7 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 	stbi_set_flip_vertically_on_load(true);
 	// Reads the image from a file and stores it in bytes
 	unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
-
+	printf("%d", numColCh);
 	// Generates an OpenGL texture object
 	glGenTextures(1, &ID);
 	// Assigns the texture to a Texture Unit
@@ -32,12 +33,38 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
 	// Check what type of color channels the texture has and load it accordingly
-	if (numColCh == 4)
+	if (type == "normal" && numColCh == 4)
 		glTexImage2D
 		(
 			GL_TEXTURE_2D,
 			0,
+			GL_RGB,
+			widthImg,
+			heightImg,
+			0,
 			GL_RGBA,
+			GL_UNSIGNED_BYTE,
+			bytes
+		);
+	else if (type == "normal" && numColCh == 3)
+		glTexImage2D
+		(
+			GL_TEXTURE_2D,
+			0,
+			GL_RGB,
+			widthImg,
+			heightImg,
+			0,
+			GL_RGB,
+			GL_UNSIGNED_BYTE,
+			bytes
+		);
+	else if (numColCh == 4)
+		glTexImage2D
+		(
+			GL_TEXTURE_2D,
+			0,
+			GL_SRGB_ALPHA,
 			widthImg,
 			heightImg,
 			0,
@@ -50,7 +77,7 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 		(
 			GL_TEXTURE_2D,
 			0,
-			GL_RGBA,
+			GL_SRGB,
 			widthImg,
 			heightImg,
 			0,
@@ -63,7 +90,7 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 		(
 			GL_TEXTURE_2D,
 			0,
-			GL_RGBA,
+			GL_SRGB,
 			widthImg,
 			heightImg,
 			0,

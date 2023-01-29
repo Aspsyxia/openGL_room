@@ -53,7 +53,7 @@ int main()
 	Camera camera(width, height, glm::vec3(0.5f, 1.0f, 0.5f));
 	Skybox skyboxNew;
 	
-	const int n = 9;
+	const int n = 10;
 
 	Model tatami("models/tatami/tatami.gltf");
 	Model doorBalcony("models/doorBalcony/doorBalcony.gltf");
@@ -64,8 +64,9 @@ int main()
 	Model curtainHolder("models/curtainHolder/curtainHolder.gltf");
 	Model walls("models/walls/walls.gltf");
 	Model curtains("models/curtains/curtains.gltf");
+	Model test("models/test/test.gltf");
 
-	Model models[n] = { tatami, doorBalcony, doorFusuma, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical };
+	Model models[n] = { tatami, doorBalcony, doorFusuma, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical, test };
 
 
 	while (!glfwWindowShouldClose(window))
