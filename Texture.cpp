@@ -59,6 +59,19 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 			GL_UNSIGNED_BYTE,
 			bytes
 		);
+	else if (type == "displacement")
+		glTexImage2D
+		(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			widthImg,
+			heightImg,
+			0,
+			GL_RGBA,
+			GL_UNSIGNED_BYTE,
+			bytes
+		);
 	else if (numColCh == 4)
 		glTexImage2D
 		(
