@@ -4,18 +4,25 @@
 
 namespace files = std::filesystem;
 
-const unsigned int width = 1600;
-const unsigned int height = 800;
+unsigned int screenWidth = 1600, screenHeight = 800;
+bool light0Enabled = true, light1Enabled = true;
+
+Camera camera(screenWidth, screenHeight, glm::vec3(0.5f, 1.0f, 0.5f));
+Model* models;
+
+glm::vec3 lightPos0 = glm::vec3(-1.0f, 2.0f, 0.0f), lightPos1 = glm::vec3(1.0f, 2.0f, 0.0f), lightPosDirect = glm::vec3(0.0f, 3.0f, -3.0f);
+glm::vec4 lightColor0 = glm::vec4(1), lightColor1 = glm::vec4(1), lightColorDirect = glm::vec4(1);
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
 	glfwInit();
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	GLFWwindow* window = glfwCreateWindow(width, height, "Room", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Room", NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -25,36 +32,22 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
-
 	gladLoadGL();
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, screenWidth, screenHeight);
+
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetKeyCallback(window, key_callback);
 
 	Shader shaderProgram("default.vert", "default.frag");
 	Shader skyboxProgram("skybox.vert", "skybox.frag");
-
-	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.0f, 1.8f, 0.0f);
-	glm::mat4 lightModel = glm::mat4(3.0f);
-	lightModel = glm::translate(lightModel, lightPos);
-
 	shaderProgram.Activate();
-
-	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
 	skyboxProgram.Activate();
-
-	glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 
-	Camera camera(width, height, glm::vec3(0.5f, 1.0f, 0.5f));
 	Skybox skyboxNew;
-	
-	const int n = 9;
-
 	Model tatami("models/tatami/tatami.gltf");
 	Model doorBalcony("models/doorBalcony/doorBalcony.gltf");
 	Model doorFusuma("models/doorFusuma/doorFusuma.gltf");
@@ -65,8 +58,8 @@ int main()
 	Model walls("models/walls/walls.gltf");
 	Model curtains("models/curtains/curtains.gltf");
 
-	Model models[n] = { tatami, doorBalcony, doorFusuma, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical };
-
+	const int n = 9;
+	models = new Model[n]{ tatami, doorBalcony, doorFusuma, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical };
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -76,15 +69,27 @@ int main()
 		camera.Inputs(window);
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
-		for (int i = 0; i <= n; i++)
+		for (int i = 0; i < n; i++)
 		{
 			models[i].Draw(shaderProgram, camera);
 		}
 
+		glm::vec4 lightCol0, lightCol1;
+		if (light0Enabled) lightCol0 = lightColor0;
+		else lightCol0 = glm::vec4(0);
+		if (light1Enabled) lightCol1 = lightColor1;
+		else lightCol1 = glm::vec4(0);
+
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor0"), lightCol0.x, lightCol0.y, lightCol0.z, lightCol0.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos0"), lightPos0.x, lightPos0.y, lightPos0.z);
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor1"), lightCol1.x, lightCol1.y, lightCol1.z, lightCol1.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos1"), lightPos1.x, lightPos1.y, lightPos1.z);
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
+		glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
+
 		glDisable(GL_CULL_FACE);
-
-		skyboxNew.Draw(skyboxProgram, camera, width, height);
-
+		skyboxNew.Draw(skyboxProgram, camera, screenWidth, screenHeight);
 		glEnable(GL_CULL_FACE);
 
 		glfwSwapBuffers(window);
@@ -96,4 +101,34 @@ int main()
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
+}
+
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+		glm::vec3 movement = glm::vec3(.5f, 0, 0);
+		models[1].interacted = !models[1].interacted;
+		if (models[1].interacted) models[1].Move(movement);
+		else models[1].Move(-movement);
+	}
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	{
+		glm::vec3 movement = glm::vec3(0, 0, .5f);
+		models[2].interacted = !models[2].interacted;
+		if (models[2].interacted) models[2].Move(movement);
+		else models[2].Move(-movement);
+	}
+	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) light0Enabled = !light0Enabled;
+	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) light1Enabled = !light1Enabled;
+}
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	screenWidth = width;
+	screenHeight = height;
+	glViewport(0, 0, width, height);
+	camera = Camera(width, height, camera.Position);
 }

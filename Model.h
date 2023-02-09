@@ -13,8 +13,9 @@ public:
 	// Loads in a model from a file and stores tha information in 'data', 'JSON', and 'file'
 	Model(const char* file);
 
-	void Draw(Shader& shader, Camera& camera);
+	bool interacted;
 
+	void Draw(Shader& shader, Camera& camera);
 	void Move(glm::vec3 translate);
 
 private:
@@ -50,8 +51,8 @@ private:
 	// Assembles all the floats into vertices
 	std::vector<Vertex> assembleVertices
 	(
-		std::vector<glm::vec3> positions, 
-		std::vector<glm::vec3> normals, 
+		std::vector<glm::vec3> positions,
+		std::vector<glm::vec3> normals,
 		std::vector<glm::vec2> texUVs
 	);
 
