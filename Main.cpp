@@ -10,8 +10,8 @@ bool light0Enabled = true, light1Enabled = true;
 Camera camera(screenWidth, screenHeight, glm::vec3(0.5f, 1.0f, 0.5f));
 Model* models;
 
-glm::vec3 lightPos0 = glm::vec3(-1.0f, 1.0f, -0.2f), lightPos1 = glm::vec3(1.0f, 2.0f, 0.0f), lightPosDirect = glm::vec3(0.0f, 3.0f, -3.0f);
-glm::vec4 lightColor0 = glm::vec4(1), lightColor1 = glm::vec4(1), lightColorDirect = glm::vec4(1);
+glm::vec3 lightPos0 = glm::vec3(-1.3f, 1.0f, -1.1f), lightPos1 = glm::vec3(1.0f, 2.0f, 0.0f), lightPosDirect = glm::vec3(0.0f, 3.0f, -3.0f);
+glm::vec4 lightColor0 = glm::vec4(0.9f, 0.8f, 0.5f, 1.0f), lightColor1 = glm::vec4(1), lightColorDirect = glm::vec4(0.9f, 0.6f, 0.35f, 1.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -81,7 +81,7 @@ int main()
 	Model writingAccesories("models/writingAccesories/writingAccesories.gltf");
 	
 	const int n = 30;
-	models = new Model[n] {tatami, doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, doorEntry, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
+	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, tatami, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -106,8 +106,8 @@ int main()
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos0"), lightPos0.x, lightPos0.y, lightPos0.z);
 		//glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor1"), lightCol1.x, lightCol1.y, lightCol1.z, lightCol1.w);
 		//glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos1"), lightPos1.x, lightPos1.y, lightPos1.z);
-		//glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
-		//glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
 		glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
 
 		glDisable(GL_CULL_FACE);
@@ -130,28 +130,35 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 	{
-		glm::vec3 movement = glm::vec3(.8f, 0, 0);
+		glm::vec3 movement = glm::vec3(0.75f, 0, 0);
+		models[0].interacted = !models[0].interacted;
+		if (models[0].interacted) models[0].Move(movement);
+		else models[0].Move(-movement);
+	}
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	{
+		glm::vec3 movement = glm::vec3(-0.75f, 0, 0);
 		models[1].interacted = !models[1].interacted;
 		if (models[1].interacted) models[1].Move(movement);
 		else models[1].Move(-movement);
 	}
-	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
 	{
-		glm::vec3 movement = glm::vec3(-.8f, 0, 0);
+		glm::vec3 movement = glm::vec3(0, 0, 0.65f);
 		models[2].interacted = !models[2].interacted;
 		if (models[2].interacted) models[2].Move(movement);
 		else models[2].Move(-movement);
 	}
-	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+	else if (key == GLFW_KEY_4 && action == GLFW_PRESS)
 	{
-		glm::vec3 movement = glm::vec3(0, 0, .6f);
+		glm::vec3 movement = glm::vec3(0, 0, -0.65f);
 		models[3].interacted = !models[3].interacted;
 		if (models[3].interacted) models[3].Move(movement);
 		else models[3].Move(-movement);
 	}
-	else if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+	else if (key == GLFW_KEY_5 && action == GLFW_PRESS)
 	{
-		glm::vec3 movement = glm::vec3(0, 0, -.6f);
+		glm::vec3 movement = glm::vec3(0.75f, 0, 0);
 		models[4].interacted = !models[4].interacted;
 		if (models[4].interacted) models[4].Move(movement);
 		else models[4].Move(-movement);
