@@ -35,39 +35,47 @@ vec4 pointLight()
 	float ambient = 0.30f;
 
 	vec3 viewDirection = normalize(camPos - crntPos);
-	
-	// Variables that control parallax occlusion mapping quality
 	float heightScale = 0.05f;
-	const float minLayers = 8.0f;
-    const float maxLayers = 64.0f;
-    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0f, 0.0f, 1.0f), viewDirection)));
-	float layerDepth = 1.0f / numLayers;
-	float currentLayerDepth = 0.0f;
 	
-	// Remove the z division if you want less aberated results
-	vec2 S = viewDirection.xy / viewDirection.z * heightScale; 
-    vec2 deltaUVs = S / numLayers;
-	
-	vec2 UVs = texCoord;
-	float currentDepthMapValue = 1.0f - texture(displacement0, UVs).r;
-	
-	// Loop till the point on the heightmap is "hit"
-	while(currentLayerDepth < currentDepthMapValue)
+    // number of depth layers
+    const float minLayers = 8;
+    const float maxLayers = 32;
+    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDirection)));  
+    // calculate the size of each layer
+    float layerDepth = 1.0 / numLayers;
+    // depth of current layer
+    float currentLayerDepth = 0.0;
+    // the amount to shift the texture coordinates per layer (from vector P)
+    vec2 P = viewDirection.xy / viewDirection.z * heightScale; 
+    vec2 deltaTexCoords = P / numLayers;
+  
+    // get initial values
+    vec2  currentTexCoords     = texCoord;
+    float currentDepthMapValue = texture(displacement0, currentTexCoords).r;
+      
+    while(currentLayerDepth < currentDepthMapValue)
     {
-        UVs -= deltaUVs;
-        currentDepthMapValue = 1.0f - texture(displacement0, UVs).r;
-        currentLayerDepth += layerDepth;
-    }
+        // shift texture coordinates along direction of P
+        currentTexCoords -= deltaTexCoords;
+        // get depthmap value at current texture coordinates
+        currentDepthMapValue = texture(displacement0, currentTexCoords).r;  
+        // get depth of next layer
+        currentLayerDepth += layerDepth;  
+    }   
+	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
 
-	// Apply Occlusion (interpolation with prev value)
-	vec2 prevTexCoords = UVs + deltaUVs;
-	float afterDepth  = currentDepthMapValue - currentLayerDepth;
-	float beforeDepth = 1.0f - texture(displacement0, prevTexCoords).r - currentLayerDepth + layerDepth;
-	float weight = afterDepth / (afterDepth - beforeDepth);
-	UVs = prevTexCoords * weight + UVs * (1.0f - weight);
+    // get depth after and before collision for linear interpolation
+    float afterDepth  = currentDepthMapValue - currentLayerDepth;
+    float beforeDepth = texture(displacement0, prevTexCoords).r - currentLayerDepth + layerDepth;
+ 
+    // interpolation of texture coordinates
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+	vec2 texCoord = finalTexCoords;
 
 	// diffuse lighting
-	vec3 normal = normalize(texture(normal0, UVs).xyz * 2.0f - 1.0f);
+	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -76,16 +84,12 @@ vec4 pointLight()
 	if(diffuse != 0.0f)
 	{
 		float specularLight = 0.50f;
-		vec3 viewDirection = normalize(camPos - crntPos);
-		vec3 reflectionDirection = reflect(-lightDirection, normal);
-
 		vec3 halfwayVector = normalize(viewDirection + lightDirection);
-
 		float specAmount = pow(max(dot(normal, halfwayVector), 0.0f), 16);
 		float specular = specAmount * specularLight;
 	};
 
-	return (texture(diffuse0, UVs) * (diffuse * inten + ambient) + texture(specular0, UVs).r * specular * inten) * lightColor;
+	return (texture(diffuse0, texCoord) * (diffuse * inten + ambient) + texture(specular0, texCoord).r * specular * inten) * lightColor;
 }
 
 vec4 direcLight()

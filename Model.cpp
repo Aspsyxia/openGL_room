@@ -283,7 +283,6 @@ std::vector<Texture> Model::getTextures()
 			else if (texPath.find("normal") != std::string::npos)
 			{
 				Texture normal = Texture((fileDirectory + texPath).c_str(), "normal", loadedTex.size());
-				normal.Bind();
 				textures.push_back(normal);
 				loadedTex.push_back(normal);
 				loadedTexName.push_back(texPath);
@@ -292,7 +291,6 @@ std::vector<Texture> Model::getTextures()
 			else if (texPath.find("displacement") != std::string::npos)
 			{
 				Texture displacement = Texture((fileDirectory + texPath).c_str(), "displacement", loadedTex.size());
-				displacement.Bind();
 				textures.push_back(displacement);
 				loadedTex.push_back(displacement);
 				loadedTexName.push_back(texPath);
