@@ -268,6 +268,7 @@ std::vector<Texture> Model::getTextures()
 			if (texPath.find("baseColor") != std::string::npos)
 			{
 				Texture diffuse = Texture((fileDirectory + texPath).c_str(), "diffuse", loadedTex.size());
+				diffuse.Bind();
 				textures.push_back(diffuse);
 				loadedTex.push_back(diffuse);
 				loadedTexName.push_back(texPath);
@@ -276,6 +277,7 @@ std::vector<Texture> Model::getTextures()
 			else if (texPath.find("metallicRoughness") != std::string::npos)
 			{
 				Texture specular = Texture((fileDirectory + texPath).c_str(), "specular", loadedTex.size());
+				specular.Bind();
 				textures.push_back(specular);
 				loadedTex.push_back(specular);
 				loadedTexName.push_back(texPath);
@@ -284,8 +286,18 @@ std::vector<Texture> Model::getTextures()
 			else if (texPath.find("normal") != std::string::npos)
 			{
 				Texture normal = Texture((fileDirectory + texPath).c_str(), "normal", loadedTex.size());
+				normal.Bind();
 				textures.push_back(normal);
 				loadedTex.push_back(normal);
+				loadedTexName.push_back(texPath);
+			}
+			// Load displacement texture
+			else if (texPath.find("displacement") != std::string::npos)
+			{
+				Texture displacement = Texture((fileDirectory + texPath).c_str(), "displacement", loadedTex.size());
+				displacement.Bind();
+				textures.push_back(displacement);
+				loadedTex.push_back(displacement);
 				loadedTexName.push_back(texPath);
 			}
 		}

@@ -29,7 +29,7 @@ vec4 pointLight(vec4 lightColor, vec3 lightPos, float a, float b)
 
 	// intensity of light with respect to distance
 	float dist = length(lightVec);
-	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
+	float inten = 5.0f / (a * dist * dist + b * dist + 1.0f);
 
 	// ambient lighting
 	float ambient = 0.30f;
@@ -99,5 +99,5 @@ void main()
 	vec4 pointLight0 = pointLight(lightColor0, lightPos0, 3.0, 0.9);
 	vec4 pointLight1 = pointLight(lightColor1, lightPos1, 3.0, 0.9);
 	vec4 pointLightDirect = pointLight(lightColorDirect, lightPosDirect, 0.3, 0.1);
-	FragColor = (pointLight0 + pointLight1 + pointLightDirect); // * (1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
+	FragColor = (pointLight0 + pointLight1 + pointLightDirect); //(1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
 }
