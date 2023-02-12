@@ -10,6 +10,7 @@ in vec2 texCoord;
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
 uniform sampler2D normal0;
+//uniform sampler2D texture1;
 
 uniform vec4 lightColor0;
 uniform vec3 lightPos0;
@@ -19,7 +20,11 @@ uniform vec4 lightColorDirect;
 uniform vec3 lightPosDirect;
 uniform vec3 camPos;
 
-float near = 0.1f;
+uniform vec3 fogColor;
+uniform float density;
+uniform float gradient;
+
+float near = 0.2f;
 float far = 100.0f;
 
 vec4 pointLight(vec4 lightColor, vec3 lightPos, float a, float b)
@@ -93,11 +98,20 @@ float logisticDepth(float depth)
 	return (1 / (1 + exp(-steepness * (zVal - offset))));
 }
 
+float calculateFog(float zCoord)
+{
+    float z = abs(zCoord);
+    return exp(-density * z * gradient);
+}
+
 void main()
 {
 	float depth = logisticDepth(gl_FragCoord.z);
 	vec4 pointLight0 = pointLight(lightColor0, lightPos0, 3.0, 0.9);
 	vec4 pointLight1 = pointLight(lightColor1, lightPos1, 3.0, 0.9);
 	vec4 pointLightDirect = pointLight(lightColorDirect, lightPosDirect, 1.5, 0.5);
-	FragColor = (pointLight0 + pointLight1 + pointLightDirect); //(1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
+	float fogFactor = calculateFog(gl_FragCoord.z);
+	FragColor = pointLight0 + pointLight1 + mix(pointLightDirect*(1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f), vec4(fogColor, 1.0), fogFactor); //(1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
 }
+
+//texture(texture1, texCoord)

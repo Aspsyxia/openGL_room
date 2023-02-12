@@ -1,11 +1,10 @@
-#include<filesystem>
 #include"Model.h"
 #include"Skybox.h"
 
 namespace files = std::filesystem;
 
 unsigned int screenWidth = 1600, screenHeight = 800;
-bool light0Enabled = true, light1Enabled = true;
+bool light0Enabled = true, light1Enabled = true, fogEnabled = false;
 
 Camera camera(screenWidth, screenHeight, glm::vec3(0.5f, 1.0f, 0.5f));
 Model* models;
@@ -79,9 +78,19 @@ int main()
 	Model notebook("models/notebook/notebook.gltf");
 	Model fan("models/fan/fan.gltf");
 	Model writingAccesories("models/writingAccesories/writingAccesories.gltf");
-	
-	const int n = 30;
-	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, tatami, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
+	Model books("models/books/books.gltf");
+	Model cigarettes("models/cigarettes/cigarettes.gltf");
+	Model corcBoard("models/corcBoard/corcBoard.gltf");
+	Model kayako("models/kayako/kayako.gltf");
+	Model lampCeiling("models/lampCeiling/lampCeiling.gltf");
+	Model flowers("models/flowers/flowers.gltf");
+	Model flowersGrass("models/flowersGrass/flowersGrass.gltf");
+	Model picture("models/picture/picture.gltf");
+	Model rubbishBean("models/rubbishBean/rubbishBean.gltf");
+	Model ac("models/ac/ac.gltf");
+
+	const int n = 40;
+	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, ac, rubbishBean, picture, flowersGrass, flowers, lampCeiling, kayako, cigarettes, corcBoard, tatami, books, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -97,10 +106,13 @@ int main()
 		}
 
 		glm::vec4 lightCol0, lightCol1;
+		glm::vec3 fogColor;
 		if (light0Enabled) lightCol0 = lightColor0;
 		else lightCol0 = glm::vec4(0);
 		if (light1Enabled) lightCol1 = lightColor1;
 		else lightCol1 = glm::vec4(0);
+		if (fogEnabled) fogColor = glm::vec3(0.9f, 0.6f, 0.35f);
+		else fogColor = glm::vec3(0);
 
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor0"), lightCol0.x, lightCol0.y, lightCol0.z, lightCol0.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos0"), lightPos0.x, lightPos0.y, lightPos0.z);
@@ -109,6 +121,11 @@ int main()
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
 		glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
+
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "fogColor"), fogColor.x, fogColor.y, fogColor.z);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "density"), 0.2f);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "gradient"), 0.9f);
+
 
 		glDisable(GL_CULL_FACE);
 		skyboxNew.Draw(skyboxProgram, camera, screenWidth, screenHeight);
@@ -165,6 +182,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) light0Enabled = !light0Enabled;
 	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) light1Enabled = !light1Enabled;
+	else if (key == GLFW_KEY_8 && action == GLFW_PRESS) fogEnabled = !fogEnabled;
 }
 
 
