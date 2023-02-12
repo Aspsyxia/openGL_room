@@ -16,28 +16,13 @@ uniform vec4 lightColor;
 uniform vec3 lightPos;
 uniform vec3 camPos;
 
+uniform float heightScale;
+
 float near = 0.1f;
 float far = 100.0f;
 
-
-vec4 pointLight()
-{	
-	// used in two variables so I calculate it here to not have to do it twice
-	vec3 lightVec = lightPos - crntPos;
-
-	// intensity of light with respect to distance
-	float dist = length(lightVec);
-	float a = 3.0;
-	float b = 0.7;
-	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
-
-	// ambient lighting
-	float ambient = 0.30f;
-
-	vec3 viewDirection = normalize(camPos - crntPos);
-	float heightScale = 0.05f;
-	
-    // number of depth layers
+vec2 ParallaxMapping(vec2 texCoord, vec3 viewDirection)
+{
     const float minLayers = 8;
     const float maxLayers = 32;
     float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDirection)));  
@@ -72,7 +57,26 @@ vec4 pointLight()
     float weight = afterDepth / (afterDepth - beforeDepth);
     vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
 
-	vec2 texCoord = finalTexCoords;
+	return finalTexCoords;
+}
+
+
+vec4 pointLight()
+{	
+	// used in two variables so I calculate it here to not have to do it twice
+	vec3 lightVec = lightPos - crntPos;
+
+	// intensity of light with respect to distance
+	float dist = length(lightVec);
+	float a = 3.0;
+	float b = 0.7;
+	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
+
+	// ambient lighting
+	float ambient = 0.30f;
+
+	vec3 viewDirection = normalize(camPos - crntPos);
+	vec2 texCoord = ParallaxMapping(texCoord,  viewDirection);
 
 	// diffuse lighting
 	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
@@ -131,6 +135,29 @@ float logisticDepth(float depth)
 
 void main()
 {
-	float depth = logisticDepth(gl_FragCoord.z);
-	FragColor = pointLight() * (1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
+	    // offset texture coordinates with Parallax Mapping
+    vec3 viewDirection = normalize(camPos - crntPos);
+    vec2 texCoords = texCoord;
+    
+    texCoords = ParallaxMapping(texCoord,  viewDirection);       
+    // obtain normal from normal map
+    vec3 normal = texture(normal0, texCoords).rgb;
+    normal = normalize(normal * 2.0 - 1.0);   
+   
+    // get diffuse color
+    vec3 color = texture(diffuse0, texCoords).rgb;
+    // ambient
+    vec3 ambient = 0.1 * color;
+    // diffuse
+    vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
+    float diff = max(dot(lightDirection, normal), 0.0);
+    vec3 diffuse = diff * color;
+    // specular    
+    vec3 reflectDir = reflect(-lightDirection, normal);
+    vec3 halfwayDir = normalize(lightDirection + viewDirection);  
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+
+    vec3 specular = vec3(0.2) * spec;
+    float depth = logisticDepth(gl_FragCoord.z);
+    FragColor = vec4(ambient + diffuse + specular, 1.0) * (1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
 }
