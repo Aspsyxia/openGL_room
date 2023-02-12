@@ -2,10 +2,11 @@
 #include"Model.h"
 #include"Skybox.h"
 
+
 namespace files = std::filesystem;
 
 unsigned int screenWidth = 1600, screenHeight = 800;
-bool light0Enabled = true, light1Enabled = true;
+bool light0Enabled = true, light1Enabled = true, fogEnabled = false;
 
 Camera camera(screenWidth, screenHeight, glm::vec3(0.5f, 1.0f, 0.5f));
 Model* models;
@@ -38,16 +39,50 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
 
+
 	Shader shaderProgram("default.vert", "default.frag");
 	Shader skyboxProgram("skybox.vert", "skybox.frag");
+	Shader VFogProgram("light.vert", "light.frag");
+
 	shaderProgram.Activate();
 	skyboxProgram.Activate();
+	
+
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 
 	Skybox skyboxNew;
+
+	//volumetric texture
+
+	int widthImg, heightImg, numColCh;
+	unsigned char* bytes = stbi_load("noiseTexture.png", &widthImg, &heightImg, &numColCh, 0);
+
+	unsigned int noiseMapTexture;
+	glGenTextures(1, &noiseMapTexture);
+	//glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, noiseMapTexture);
+
+	
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	
+	stbi_image_free(bytes);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	//vol
+	VFogProgram.Activate();
+
 
 	Model tatami("models/tatami/tatami.gltf");
 	Model doorBalconyFrame("models/doorBalconySeperate/doorBalconyFrame1.gltf");
@@ -79,9 +114,25 @@ int main()
 	Model notebook("models/notebook/notebook.gltf");
 	Model fan("models/fan/fan.gltf");
 	Model writingAccesories("models/writingAccesories/writingAccesories.gltf");
+	Model books("models/books/books.gltf");
+	Model cigarettes("models/cigarettes/cigarettes.gltf");
+	Model corcBoard("models/corcBoard/corcBoard.gltf");
+	Model kayako("models/kayako/kayako.gltf");
+	Model lampCeiling("models/lampCeiling/lampCeiling.gltf");
+	Model flowers("models/flowers/flowers.gltf");
+	Model flowersGrass("models/flowersGrass/flowersGrass.gltf");
+	Model picture("models/picture/picture.gltf");
+	Model rubbishBean("models/rubbishBean/rubbishBean.gltf");
+	Model ac("models/ac/ac.gltf");
+
+	const int n = 40;
+	models = new Model[n]{ doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, ac, rubbishBean, picture, flowersGrass, flowers, lampCeiling, kayako, cigarettes, corcBoard, tatami, books, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical };
+
+	//
+	//GLuint tex0Uni = glGetUniformLocation(VFogProgram.ID, "noiseMap");
 	
-	const int n = 30;
-	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, tatami, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
+	//glUniform1i(tex0Uni, 0);
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -97,10 +148,17 @@ int main()
 		}
 
 		glm::vec4 lightCol0, lightCol1;
+		glm::vec3 fogColor;
 		if (light0Enabled) lightCol0 = lightColor0;
 		else lightCol0 = glm::vec4(0);
 		if (light1Enabled) lightCol1 = lightColor1;
 		else lightCol1 = glm::vec4(0);
+		if (fogEnabled) fogColor = glm::vec3(0.9f, 0.6f, 0.35f);
+		else fogColor = glm::vec3(0);
+
+		float fogStart = 10.0f;
+		float fogEnd = 100.0f;
+
 
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor0"), lightCol0.x, lightCol0.y, lightCol0.z, lightCol0.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos0"), lightPos0.x, lightPos0.y, lightPos0.z);
@@ -109,6 +167,24 @@ int main()
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
 		glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
+
+		//glUniform3f(glGetUniformLocation(shaderProgram.ID, "fogColor"), fogColor.x, fogColor.y, fogColor.z);
+		//glUniform1f(glGetUniformLocation(shaderProgram.ID, "density"), 0.1f);
+		//glUniform1f(glGetUniformLocation(shaderProgram.ID, "gradient"), 1.0f);
+
+		glUniform3f(glGetUniformLocation(VFogProgram.ID, "fogColor"), fogColor.x, fogColor.y, fogColor.z);
+		glUniform1f(glGetUniformLocation(VFogProgram.ID, "density"), 0.1f);
+		glUniform1f(glGetUniformLocation(VFogProgram.ID, "gradient"), 1.0f);
+
+		//glUniform1i(glGetUniformLocation(VFogProgram.ID, "noiseMap"), 0);
+
+		glUniform1i(glGetUniformLocation(VFogProgram.ID, "noiseMap"), 0);
+		glUniform3f(glGetUniformLocation(VFogProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+		glUniform1f(glGetUniformLocation(VFogProgram.ID, "fogStart"), fogStart);
+		glUniform1f(glGetUniformLocation(VFogProgram.ID, "fogEnd"), fogEnd);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, noiseMapTexture);
 
 		glDisable(GL_CULL_FACE);
 		skyboxNew.Draw(skyboxProgram, camera, screenWidth, screenHeight);
@@ -120,6 +196,9 @@ int main()
 
 	shaderProgram.Delete();
 	skyboxProgram.Delete();
+	VFogProgram.Delete();
+
+	glDeleteTextures(1, &noiseMapTexture);
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
@@ -165,6 +244,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) light0Enabled = !light0Enabled;
 	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) light1Enabled = !light1Enabled;
+	else if (key == GLFW_KEY_7 && action == GLFW_PRESS) fogEnabled = !fogEnabled;
 }
 
 

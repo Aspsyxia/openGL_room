@@ -21,7 +21,7 @@ Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::v
 	VBO.Unbind();
 	EBO.Unbind();
 }
-
+	
 
 void Mesh::Draw
 (
