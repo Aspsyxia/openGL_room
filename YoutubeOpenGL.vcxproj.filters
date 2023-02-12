@@ -100,5 +100,20 @@
     <None Include="skybox.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="shadowMap.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shadowMap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shadowCubeMap.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shadowCubeMap.geom">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shadowCubeMap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
