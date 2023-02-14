@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fc2aea5d-0f79-412f-b4b6-99f3cd9efe05" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../default.frag" beforeDir="false" afterPath="$PROJECT_DIR$/../default.frag" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/balcony/balcony.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/balcony/balcony.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/blanket/blanket.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/blanket/blanket.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/cupboard/cupboard.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../models/cupboard/cupboard.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/cupboard/cupboard.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/cupboard/cupboard.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/cupboard/textures/cupboard_baseColor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/desk/desk.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/desk/desk.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/doorEntry/doorEntry.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/doorEntry/doorEntry.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/doorFusuma/doorFusuma.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/doorFusuma/doorFusuma.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/fusumaSeperate/fusumaLeft.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/fusumaSeperate/fusumaLeft.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/fusumaSeperate/fusumaRight.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/fusumaSeperate/fusumaRight.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/fusumaSeperate/textures/fusumaDoor_baseColor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/lamp/lamp.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/lamp/lamp.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/tatami/tatami.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/tatami/tatami.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/writingAccesories/writingAccesories.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../models/writingAccesories/writingAccesories.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/writingAccesories/writingAccesories.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/../models/writingAccesories/writingAccesories.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/back.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bottom.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/bottom.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/front.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/left.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/left.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/right.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/right.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/top.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/top.jpg" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="2Lg1MEBRp4uxXevaK9IBPUjS0ak" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1676277866218</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676277866218</updated>
+      <workItem from="1676277882476" duration="2000" />
+    </task>
+    <servers />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

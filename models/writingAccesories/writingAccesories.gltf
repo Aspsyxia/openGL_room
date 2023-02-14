@@ -27,13 +27,19 @@
                 0
             ],
             "name" : "writingAccesories",
+            "normalTexture" : {
+                "index" : 0,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,20 +62,36 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
+            "name" : "writingAccesories_normal",
+            "uri" : "textures/writingAccesories_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
             "name" : "writingAccesories_baseColor",
             "uri" : "textures/writingAccesories_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "writingAccesories_metallicRoughness-writingAccesories_metallicRoughness.png",
+            "uri" : "textures/writingAccesories_metallicRoughness-writingAccesories_metallicRoughness_png.png"
         }
     ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 911,
+            "count" : 891,
             "max" : [
                 -0.5070594549179077,
                 0.8554667234420776,
@@ -85,13 +107,13 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 911,
+            "count" : 891,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 911,
+            "count" : 891,
             "type" : "VEC2"
         },
         {
@@ -104,28 +126,28 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 10932,
+            "byteLength" : 10692,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 10932,
-            "byteOffset" : 10932
+            "byteLength" : 10692,
+            "byteOffset" : 10692
         },
         {
             "buffer" : 0,
-            "byteLength" : 7288,
-            "byteOffset" : 21864
+            "byteLength" : 7128,
+            "byteOffset" : 21384
         },
         {
             "buffer" : 0,
             "byteLength" : 3936,
-            "byteOffset" : 29152
+            "byteOffset" : 28512
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 33088,
+            "byteLength" : 32448,
             "uri" : "writingAccesories.bin"
         }
     ]

@@ -27,13 +27,19 @@
                 0
             ],
             "name" : "doorEntry",
+            "normalTexture" : {
+                "index" : 0,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,13 +62,29 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
+            "name" : "doorEntry_normal",
+            "uri" : "textures/doorEntry_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
             "name" : "doorEntry_baseColor",
             "uri" : "textures/doorEntry_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "doorEntry_metallicRoughness-doorEntry_metallicRoughness.png",
+            "uri" : "textures/doorEntry_metallicRoughness-doorEntry_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

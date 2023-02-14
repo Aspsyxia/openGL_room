@@ -27,13 +27,20 @@
                 0
             ],
             "name" : "Blanket",
+            "normalTexture" : {
+                "index" : 0,
+                "scale" : 0.27000004053115845,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,13 +63,29 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
+            "name" : "blanket_normal",
+            "uri" : "textures/blanket_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
             "name" : "blanket_baseColor",
             "uri" : "textures/blanket_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "blanket_metallicRoughness-blanket_metallicRoughness.png",
+            "uri" : "textures/blanket_metallicRoughness-blanket_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

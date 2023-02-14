@@ -36,8 +36,10 @@
                     "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -63,6 +65,9 @@
         },
         {
             "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
@@ -75,6 +80,11 @@
             "mimeType" : "image/png",
             "name" : "tatami_baseColor",
             "uri" : "textures/tatami_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "tatami_metallicRoughness-tatami_metallicRoughness.png",
+            "uri" : "textures/tatami_metallicRoughness-tatami_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

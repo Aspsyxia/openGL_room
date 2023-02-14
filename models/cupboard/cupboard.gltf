@@ -27,13 +27,19 @@
                 0
             ],
             "name" : "cupboard",
+            "normalTexture" : {
+                "index" : 0,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 1
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,13 +62,29 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "cupboard_baseColor",
-            "uri" : "textures/cupboard_baseColor.png"
+            "name" : "cupboard_normal",
+            "uri" : "textures/cupboard_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "cupboard_baseColor.png",
+            "uri" : "textures/cupboard_baseColor_png.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "cupboard_metallicRoughness-cupboard_metallicRoughness.png",
+            "uri" : "textures/cupboard_metallicRoughness-cupboard_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

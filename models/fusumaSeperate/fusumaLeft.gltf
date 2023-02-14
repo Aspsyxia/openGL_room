@@ -27,13 +27,19 @@
                 0
             ],
             "name" : "fusumaDoor",
+            "normalTexture" : {
+                "index" : 0,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,13 +62,29 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "fusumaDoor_baseColor",
-            "uri" : "textures/fusumaDoor_baseColor.png"
+            "name" : "fusumaDoor_normal.png",
+            "uri" : "textures/fusumaDoor_normal_png.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "fusumaDoor_baseColor.png",
+            "uri" : "textures/fusumaDoor_baseColor_png.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "fusumaDoor_metallicRoughness.png-fusumaDoor_metallicRoughness.png",
+            "uri" : "textures/fusumaDoor_metallicRoughness_png-fusumaDoor_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

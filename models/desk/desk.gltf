@@ -27,13 +27,19 @@
                 0
             ],
             "name" : "desk",
+            "normalTexture" : {
+                "index" : 0,
+                "texCoord" : 0
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 0,
+                    "index" : 1,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 1
+                "metallicRoughnessTexture" : {
+                    "index" : 2,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,13 +62,29 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
+        },
+        {
+            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
+            "name" : "desk_normal",
+            "uri" : "textures/desk_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
             "name" : "desk_baseColor",
             "uri" : "textures/desk_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "desk_metallicRoughness-desk_metallicRoughness.png",
+            "uri" : "textures/desk_metallicRoughness-desk_metallicRoughness_png.png"
         }
     ],
     "accessors" : [

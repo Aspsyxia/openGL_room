@@ -4,13 +4,24 @@
 namespace files = std::filesystem;
 
 unsigned int screenWidth = 1600, screenHeight = 800;
-bool light0Enabled = true, light1Enabled = true, fogEnabled = false;
+
+bool light0Enabled = true;
+bool light1Enabled = false; 
+bool lightDirEnabled = false;
+bool fogEnabled = false;
+
+float dotFactor = 0.9f;
+float roughnessFactor = 0.7f;
 
 Camera camera(screenWidth, screenHeight, glm::vec3(0.5f, 1.0f, 0.5f));
 Model* models;
 
-glm::vec3 lightPos0 = glm::vec3(-1.3f, 1.0f, -1.1f), lightPos1 = glm::vec3(1.0f, 2.0f, 0.0f), lightPosDirect = glm::vec3(0.0f, 3.0f, -3.0f);
-glm::vec4 lightColor0 = glm::vec4(0.9f, 0.8f, 0.5f, 1.0f), lightColor1 = glm::vec4(1), lightColorDirect = glm::vec4(0.9f, 0.6f, 0.35f, 1.0f);
+glm::vec3 lightPos0 = glm::vec3(0.35f, 1.2f, -3.0f);
+glm::vec3 lightPos1 = glm::vec3(-1.2f, 1.0f, -1.0f);
+glm::vec3 lightPosDirect = glm::vec3(0.0f, 3.0f, -2.0f);
+glm::vec3 lightColor0 = glm::vec3(0.9f, 0.8f, 0.5f);
+glm::vec4 lightColor1 = glm::vec4(0.9f, 0.8f, 0.5f, 1.0f);
+glm::vec4 lightColorDirect = glm::vec4(0.6f, 0.6f, 0.6f, 0.6f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -88,9 +99,11 @@ int main()
 	Model picture("models/picture/picture.gltf");
 	Model rubbishBean("models/rubbishBean/rubbishBean.gltf");
 	Model ac("models/ac/ac.gltf");
+	Model city("models/city/city.gltf");
 
 	const int n = 40;
-	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, ac, rubbishBean, picture, flowersGrass, flowers, lampCeiling, kayako, cigarettes, corcBoard, tatami, books, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
+	models = new Model[n] {doorBalconyLeft, doorBalconyRight, fusumaLeft, fusumaRight, doorEntry, ac, rubbishBean, picture,flowersGrass, flowers, lampCeiling, kayako, cigarettes, corcBoard, tatami, books, pillow, doorBalconyFrame, writingAccesories, fan, notebook, cupboard, socket, lamp, shelf, poster, blanket,chair, pillowChair, fusumaInside, futon, flowerPots, balcony, desk, floorWood, walls, wallsJambs, curtainHolder, curtains, jambsVertical};
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -105,26 +118,33 @@ int main()
 			models[i].Draw(shaderProgram, camera);
 		}
 
-		glm::vec4 lightCol0, lightCol1;
-		glm::vec3 fogColor;
+		glm::vec3 lightCol0, fogColor;
+		glm::vec4 lightCol1, lightColDirect;
 		if (light0Enabled) lightCol0 = lightColor0;
-		else lightCol0 = glm::vec4(0);
+		else
+		{
+			lightCol0 = glm::vec3(0);
+			city.Draw(shaderProgram, camera);
+		}
 		if (light1Enabled) lightCol1 = lightColor1;
 		else lightCol1 = glm::vec4(0);
+		if (lightDirEnabled) lightColDirect = lightColorDirect;
+		else lightColDirect = glm::vec4(0);
 		if (fogEnabled) fogColor = glm::vec3(0.9f, 0.6f, 0.35f);
 		else fogColor = glm::vec3(0);
 
-		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor0"), lightCol0.x, lightCol0.y, lightCol0.z, lightCol0.w);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "dotFactor"), dotFactor);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "roughnessFactor"), roughnessFactor);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightColor0"), lightCol0.x, lightCol0.y, lightCol0.z);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos0"), lightPos0.x, lightPos0.y, lightPos0.z);
-		//glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor1"), lightCol1.x, lightCol1.y, lightCol1.z, lightCol1.w);
-		//glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos1"), lightPos1.x, lightPos1.y, lightPos1.z);
-		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColorDirect.x, lightColorDirect.y, lightColorDirect.z, lightColorDirect.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPosDirect"), lightPosDirect.x, lightPosDirect.y, lightPosDirect.z);
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor1"), lightCol1.x, lightCol1.y, lightCol1.z, lightCol1.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos1"), lightPos1.x, lightPos1.y, lightPos1.z);
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColorDirect"), lightColDirect.x, lightColDirect.y, lightColDirect.z, lightColDirect.w);
 		glUniform1i(glGetUniformLocation(skyboxProgram.ID, "skybox"), 0);
 
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "fogColor"), fogColor.x, fogColor.y, fogColor.z);
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "density"), 0.2f);
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "gradient"), 0.9f);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "density"), 0.8f);
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "gradient"), 0.8f);
 
 
 		glDisable(GL_CULL_FACE);
@@ -139,6 +159,8 @@ int main()
 	skyboxProgram.Delete();
 	glfwDestroyWindow(window);
 	glfwTerminate();
+	std::cout << "last dot factor: " << dotFactor << std::endl << "last roughness factor: " << roughnessFactor << std::endl;
+	system("pause");
 	return 0;
 }
 
@@ -180,9 +202,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (models[4].interacted) models[4].Move(movement);
 		else models[4].Move(-movement);
 	}
-	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) light0Enabled = !light0Enabled;
-	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) light1Enabled = !light1Enabled;
-	else if (key == GLFW_KEY_8 && action == GLFW_PRESS) fogEnabled = !fogEnabled;
+	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) light0Enabled = !light0Enabled;
+	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) light1Enabled = !light1Enabled;
+	else if (key == GLFW_KEY_8 && action == GLFW_PRESS) lightDirEnabled = !lightDirEnabled;
+	else if (key == GLFW_KEY_7 && action == GLFW_PRESS) fogEnabled = !fogEnabled;
+	else if (key == GLFW_KEY_X && action == GLFW_PRESS) dotFactor = dotFactor + 0.1;
+	else if (key == GLFW_KEY_Z && action == GLFW_PRESS) dotFactor = dotFactor - 0.1;
+	else if (key == GLFW_KEY_C && action == GLFW_PRESS) roughnessFactor = roughnessFactor + 0.1;
+	else if (key == GLFW_KEY_V && action == GLFW_PRESS) roughnessFactor = roughnessFactor - 0.1;
 }
 
 

@@ -32,8 +32,10 @@
                     "index" : 0,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 1
+                "metallicRoughnessTexture" : {
+                    "index" : 1,
+                    "texCoord" : 0
+                }
             }
         }
     ],
@@ -56,6 +58,9 @@
     "textures" : [
         {
             "source" : 0
+        },
+        {
+            "source" : 1
         }
     ],
     "images" : [
@@ -63,6 +68,11 @@
             "mimeType" : "image/png",
             "name" : "lamp_baseColor",
             "uri" : "textures/lamp_baseColor.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "lamp_metallicRoughness",
+            "uri" : "textures/lamp_metallicRoughness.png"
         }
     ],
     "accessors" : [
